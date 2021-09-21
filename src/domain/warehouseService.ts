@@ -4,21 +4,21 @@ import { DDB_TABLE } from '../constants'
 import { v4 as uuidv4 } from 'uuid'
 import { addPrefix, removePrefix } from '../utils'
 
-const PREFIX = 'p#'
-const entityType = 'product'
+const PREFIX = 'w#'
+const entityType = 'warehouse'
 
-const dynamoRecordToRecord = (record: any): Product => {
+const dynamoRecordToRecord = (record: any): Warehouse => {
   const { pk, ...data } = record
 
   return omit(['sk', 'entityType'], {
     ...data,
     id: removePrefix(pk, PREFIX)
-  }) as Product
+  }) as Warehouse
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const productServiceFactory = (client: DynamoClient) => {
-  const getProductById = async (id: string): Promise<Product | undefined> =>
+export const warehouseServiceFactory = (client: DynamoClient) => {
+  const getWarehouseById = async (id: string): Promise<Warehouse | undefined> =>
     client
       .getItem({
         TableName: DDB_TABLE,
@@ -29,18 +29,16 @@ export const productServiceFactory = (client: DynamoClient) => {
       })
       .then(({ Item }) => (Item ? dynamoRecordToRecord(Item) : undefined))
 
-  const saveProduct = async ({
+  const saveWarehouse = async ({
     id,
-    price,
-    name
-  }: Product): Promise<Product> => {
+    address
+  }: Warehouse): Promise<Warehouse> => {
     const _id = id ? removePrefix(id, PREFIX) : uuidv4()
 
     const record = {
       pk: addPrefix(_id, PREFIX),
       sk: addPrefix(_id, PREFIX),
-      price,
-      name,
+      address,
       entityType
     }
 
@@ -48,13 +46,12 @@ export const productServiceFactory = (client: DynamoClient) => {
 
     return {
       id: _id,
-      price,
-      name
+      address
     }
   }
 
   return {
-    getProductById,
-    saveProduct
+    getWarehouseById,
+    saveWarehouse
   }
 }

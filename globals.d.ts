@@ -9,3 +9,16 @@ declare type Product = {
   price: number
   name: string
 }
+
+declare type Address = {
+  line1: string
+  line2?: string
+  town: string
+  city: string
+  postcode: string
+}
+
+declare type Warehouse = {
+  id?: string
+  address: Address
+}

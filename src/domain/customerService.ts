@@ -2,7 +2,7 @@ import { omit } from 'ramda'
 import { DynamoClient } from '../clients/dynamoClient'
 import { DDB_TABLE } from '../constants'
 import { v4 as uuidv4 } from 'uuid'
-import { addPrefix, removePrefix } from './utils'
+import { addPrefix, removePrefix } from '../utils'
 
 const PREFIX = 'c#'
 const entityType = 'customer'

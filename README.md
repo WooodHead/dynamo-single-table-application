@@ -67,6 +67,40 @@ sample record
 },
 ```
 
+### Warehouse
+
+sample record
+
+```
+{
+    "pk": {
+        "S": "w#64313598-189d-4974-822c-5a055d6ee0cf"
+    },
+    "sk": {
+        "S": "w#64313598-189d-4974-822c-5a055d6ee0cf"
+    },
+    "address": {
+        "M": {
+            "postcode": {
+                "S": "25087"
+            },
+            "town": {
+                "S": "Buckinghamshire"
+            },
+            "city": {
+                "S": "East Melany"
+            },
+            "line1": {
+                "S": "13192 Jacobi Grove"
+            }
+        }
+    },
+    "entityType": {
+        "S": "warehouse"
+    }
+},
+```
+
 ## References
 
 This work is largely taken from and inspired by the following sources:

@@ -1,7 +1,7 @@
 import { datatype } from 'faker'
-import { productServiceFactory } from '../src/domain/productService'
-import { testDynamoClient } from './awsTestClients'
-import { testProduct } from './testFactories'
+import { productServiceFactory } from '../../src/domain/productService'
+import { testDynamoClient } from '../awsTestClients'
+import { testProduct } from '../testFactories'
 
 const service = productServiceFactory(testDynamoClient)
 

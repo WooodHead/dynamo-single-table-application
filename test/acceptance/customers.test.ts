@@ -1,7 +1,7 @@
 import { internet } from 'faker'
-import { customerServiceFactory } from '../src/domain/customerService'
-import { testDynamoClient } from './awsTestClients'
-import { testCustomer } from './testFactories'
+import { customerServiceFactory } from '../../src/domain/customerService'
+import { testDynamoClient } from '../awsTestClients'
+import { testCustomer } from '../testFactories'
 
 const service = customerServiceFactory(testDynamoClient)
 
