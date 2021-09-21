@@ -34,3 +34,18 @@ declare type StockInventory = {
   warehouseId: string
   quantity: number
 }
+
+declare type PaymentType = 'voucher' | 'mastercard' | 'paypal' | 'visa' | 'amex'
+
+declare type Payment = {
+  type: PaymentType
+  amount: number
+}
+
+declare type Invoice = {
+  id?: string
+  orderId: string
+  payments: Payment[]
+  amount: number
+  date: string
+}

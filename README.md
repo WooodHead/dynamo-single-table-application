@@ -17,6 +17,12 @@ yarn local:down
 yarn test
 ```
 
+truncate the dynamo table
+
+```bash
+yarn purge
+```
+
 ## Table design
 
 ### Access patterns
@@ -136,7 +142,7 @@ sample stock inventory record
 
 ### Orders
 
-sample record
+sample order record
 
 ```
 {
@@ -153,6 +159,42 @@ sample record
         "S": "order"
     }
 }
+```
+
+sample order invoice record
+
+```
+{
+    "pk": {
+        "S": "o#c660de9e-78db-49e8-bc48-da2f5672077c"
+    },
+    "sk": {
+        "S": "i#6fb083f1-0468-482a-9cdb-ea101b9e49a0"
+    },
+    "date": {
+        "S": "2021-09-21T23:27:09.104Z"
+    },
+    "amount": {
+        "N": "313.06"
+    },
+    "entityType": {
+        "S": "invoice"
+    },
+    "payments": {
+        "L": [
+            {
+                "M": {
+                    "type": {
+                        "S": "amex"
+                    },
+                    "amount": {
+                        "N": "313.06"
+                    }
+                }
+            }
+        ]
+    }
+},
 ```
 
 ## References

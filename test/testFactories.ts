@@ -1,4 +1,5 @@
 import { datatype, internet, lorem, address } from 'faker'
+import { paymentTypes } from '../src/types'
 
 export const testCustomer = (overrides: Partial<Customer> = {}): Customer => ({
   id: datatype.uuid(),
@@ -43,5 +44,23 @@ export const testStockInventory = (
   productId: datatype.uuid(),
   warehouseId: datatype.uuid(),
   quantity: datatype.number(100),
+  ...overrides
+})
+
+export const testPaymentType = (): PaymentType =>
+  paymentTypes[Math.floor(Math.random() * paymentTypes.length)]
+
+export const testPayment = (overrides: Partial<Payment> = {}): Payment => ({
+  type: testPaymentType(),
+  amount: datatype.number(),
+  ...overrides
+})
+
+export const testInvoice = (overrides: Partial<Invoice> = {}): Invoice => ({
+  id: datatype.uuid(),
+  orderId: datatype.uuid(),
+  payments: [testPayment()],
+  amount: datatype.number(),
+  date: new Date().toISOString(),
   ...overrides
 })

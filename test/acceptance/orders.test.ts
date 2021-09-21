@@ -1,6 +1,6 @@
 import { orderServiceFactory } from '../../src/domain/orderService'
 import { testDynamoClient } from '../awsTestClients'
-import { testOrder } from '../testFactories'
+import { testInvoice, testOrder } from '../testFactories'
 
 const service = orderServiceFactory(testDynamoClient)
 
@@ -49,5 +49,9 @@ describe('orders', () => {
     )
 
     expect(result).toEqual(updated)
+  })
+
+  it('saves an order invoice', async () => {
+    await service.saveOrderInvoice(testInvoice())
   })
 })
