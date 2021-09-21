@@ -105,6 +105,27 @@ sample record
 },
 ```
 
+### Orders
+
+sample record
+
+```
+{
+    "pk": {
+        "S": "o#eecf9a88-0ef5-477a-8dcd-5a09c565b480"
+    },
+    "sk": {
+        "S": "c#0b96a2f4-9df0-491f-9041-f920e46ac960"
+    },
+    "date": {
+        "S": "2021-09-21T22:44:29.326Z"
+    },
+    "entityType": {
+        "S": "order"
+    }
+}
+```
+
 ## References
 
 This work is largely taken from and inspired by the following sources:

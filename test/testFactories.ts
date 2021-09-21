@@ -29,3 +29,10 @@ export const testWarehouse = (
   address: testAddress(),
   ...overrides
 })
+
+export const testOrder = (overrides: Partial<Order> = {}): Order => ({
+  id: datatype.uuid(),
+  customerId: datatype.uuid(),
+  date: new Date().toISOString(),
+  ...overrides
+})

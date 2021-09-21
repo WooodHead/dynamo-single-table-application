@@ -22,3 +22,9 @@ declare type Warehouse = {
   id?: string
   address: Address
 }
+
+declare type Order = {
+  id?: string
+  customerId: string
+  date: string
+}

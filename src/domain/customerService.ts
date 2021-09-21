@@ -4,7 +4,7 @@ import { DDB_TABLE } from '../constants'
 import { v4 as uuidv4 } from 'uuid'
 import { addPrefix, removePrefix } from '../utils'
 
-const PREFIX = 'c#'
+export const CUSTOMER_PREFIX = 'c#'
 const entityType = 'customer'
 
 const dynamoRecordToRecord = (record: any): Customer => {
@@ -12,7 +12,7 @@ const dynamoRecordToRecord = (record: any): Customer => {
 
   return omit(['sk', 'entityType'], {
     ...data,
-    id: removePrefix(pk, PREFIX)
+    id: removePrefix(pk, CUSTOMER_PREFIX)
   }) as Customer
 }
 
@@ -23,8 +23,8 @@ export const customerServiceFactory = (client: DynamoClient) => {
       .getItem({
         TableName: DDB_TABLE,
         Key: {
-          pk: addPrefix(id, PREFIX),
-          sk: addPrefix(id, PREFIX)
+          pk: addPrefix(id, CUSTOMER_PREFIX),
+          sk: addPrefix(id, CUSTOMER_PREFIX)
         } as any
       })
       .then(({ Item }) => (Item ? dynamoRecordToRecord(Item) : undefined))
@@ -34,11 +34,11 @@ export const customerServiceFactory = (client: DynamoClient) => {
     email,
     name
   }: Customer): Promise<Customer> => {
-    const _id = id ? removePrefix(id, PREFIX) : uuidv4()
+    const _id = id ? removePrefix(id, CUSTOMER_PREFIX) : uuidv4()
 
     const record = {
-      pk: addPrefix(_id, PREFIX),
-      sk: addPrefix(_id, PREFIX),
+      pk: addPrefix(_id, CUSTOMER_PREFIX),
+      sk: addPrefix(_id, CUSTOMER_PREFIX),
       email,
       name,
       entityType
