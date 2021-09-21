@@ -1,7 +1,6 @@
 {
   "name": "dynamo-single-table-application",
   "version": "1.0.0",
-  "main": "index.js",
   "repository": "https://github.com/garydouglasalway/dynamo-single-table-application.git",
   "author": "Gary Alway",
   "license": "MIT",

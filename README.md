@@ -23,6 +23,16 @@ yarn test
 
 todo
 
+### Key prefixes
+
+- `c#` = customer
+- `p#` = product
+- `w#` = warehouse
+- `o#` = order
+- `i#` = invoice
+- `s#` = shipment
+- `si#` = shipment item
+
 ### Customers
 
 sample record
@@ -85,8 +95,8 @@ sample record
     },
     "address": {
         "M": {
-            "postcode": {
-                "S": "25087"
+            "line1": {
+                "S": "13192 Jacobi Grove"
             },
             "town": {
                 "S": "Buckinghamshire"
@@ -94,8 +104,8 @@ sample record
             "city": {
                 "S": "East Melany"
             },
-            "line1": {
-                "S": "13192 Jacobi Grove"
+            "postcode": {
+                "S": "25087"
             }
         }
     },
