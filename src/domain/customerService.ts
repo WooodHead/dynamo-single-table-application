@@ -2,18 +2,16 @@ import { omit } from 'ramda'
 import { DynamoClient } from '../clients/dynamoClient'
 import { DDB_TABLE } from '../constants'
 import { v4 as uuidv4 } from 'uuid'
+import { addPrefix, removePrefix } from './utils'
 
 const PREFIX = 'c#'
-
-const removePrefix = (id: string): string => id.replace(PREFIX, '')
-const addPrefix = (id: string): string => `${PREFIX}${removePrefix(id)}`
 
 const dynamoRecordToRecord = (record: any): Customer => {
   const { pk, ...data } = record
 
   return omit(['sk', 'entityType'], {
     ...data,
-    id: removePrefix(pk)
+    id: removePrefix(pk, PREFIX)
   }) as Customer
 }
 
@@ -24,8 +22,8 @@ export const customerServiceFactory = (client: DynamoClient) => {
       .getItem({
         TableName: DDB_TABLE,
         Key: {
-          pk: addPrefix(id),
-          sk: addPrefix(id)
+          pk: addPrefix(id, PREFIX),
+          sk: addPrefix(id, PREFIX)
         } as any
       })
       .then(({ Item }) => dynamoRecordToRecord(Item))
@@ -35,11 +33,11 @@ export const customerServiceFactory = (client: DynamoClient) => {
     email,
     name
   }: Customer): Promise<Customer> => {
-    const _id = id ? removePrefix(id) : uuidv4()
+    const _id = id ? removePrefix(id, PREFIX) : uuidv4()
 
     const record = {
-      pk: addPrefix(_id),
-      sk: addPrefix(_id),
+      pk: addPrefix(_id, PREFIX),
+      sk: addPrefix(_id, PREFIX),
       email: email,
       name: name,
       entityType: 'customer'
