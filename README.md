@@ -19,6 +19,10 @@ yarn test
 
 ## Table design
 
+### Access patterns
+
+todo
+
 ### Customers
 
 sample record
