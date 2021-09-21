@@ -3,16 +3,18 @@ import { DynamoClient } from '../dynamoClient'
 import { DDB_TABLE } from '../constants'
 import { v4 as uuidv4 } from 'uuid'
 import { addPrefix, removePrefix } from '../utils'
+import { PRODUCT_PREFIX } from './productService'
 
-const PREFIX = 'w#'
+const WAREHOUSE_PREFIX = 'w#'
 const entityType = 'warehouse'
+const stockEntityType = 'warehouseStock'
 
 const dynamoRecordToRecord = (record: any): Warehouse => {
   const { pk, ...data } = record
 
   return omit(['sk', 'entityType'], {
     ...data,
-    id: removePrefix(pk, PREFIX)
+    id: removePrefix(pk, WAREHOUSE_PREFIX)
   }) as Warehouse
 }
 
@@ -23,8 +25,8 @@ export const warehouseServiceFactory = (client: DynamoClient) => {
       .getItem({
         TableName: DDB_TABLE,
         Key: {
-          pk: addPrefix(id, PREFIX),
-          sk: addPrefix(id, PREFIX)
+          pk: addPrefix(id, WAREHOUSE_PREFIX),
+          sk: addPrefix(id, WAREHOUSE_PREFIX)
         } as any
       })
       .then(({ Item }) => (Item ? dynamoRecordToRecord(Item) : undefined))
@@ -33,11 +35,11 @@ export const warehouseServiceFactory = (client: DynamoClient) => {
     id,
     address
   }: Warehouse): Promise<Warehouse> => {
-    const _id = id ? removePrefix(id, PREFIX) : uuidv4()
+    const _id = id ? removePrefix(id, WAREHOUSE_PREFIX) : uuidv4()
 
     const record = {
-      pk: addPrefix(_id, PREFIX),
-      sk: addPrefix(_id, PREFIX),
+      pk: addPrefix(_id, WAREHOUSE_PREFIX),
+      sk: addPrefix(_id, WAREHOUSE_PREFIX),
       address,
       entityType
     }
@@ -50,8 +52,24 @@ export const warehouseServiceFactory = (client: DynamoClient) => {
     }
   }
 
+  const saveWarehouseStock = async ({
+    productId,
+    warehouseId,
+    quantity
+  }: StockInventory) => {
+    const record = {
+      pk: addPrefix(productId, PRODUCT_PREFIX),
+      sk: addPrefix(warehouseId, WAREHOUSE_PREFIX),
+      quantity,
+      entityType: stockEntityType
+    }
+
+    await client.putItem(record, DDB_TABLE)
+  }
+
   return {
     getWarehouseById,
-    saveWarehouse
+    saveWarehouse,
+    saveWarehouseStock
   }
 }

@@ -36,3 +36,12 @@ export const testOrder = (overrides: Partial<Order> = {}): Order => ({
   date: new Date().toISOString(),
   ...overrides
 })
+
+export const testStockInventory = (
+  overrides: Partial<StockInventory> = {}
+): StockInventory => ({
+  productId: datatype.uuid(),
+  warehouseId: datatype.uuid(),
+  quantity: datatype.number(100),
+  ...overrides
+})

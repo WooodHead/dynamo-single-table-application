@@ -1,6 +1,10 @@
 import { warehouseServiceFactory } from '../../src/domain/warehouseService'
 import { testDynamoClient } from '../awsTestClients'
-import { testAddress, testWarehouse } from '../testFactories'
+import {
+  testAddress,
+  testStockInventory,
+  testWarehouse
+} from '../testFactories'
 
 const service = warehouseServiceFactory(testDynamoClient)
 
@@ -42,5 +46,9 @@ describe('warehouses', () => {
     const result = await service.getWarehouseById(warehouse.id!)
 
     expect(result).toEqual(updated)
+  })
+
+  it('saves stock items', async () => {
+    await service.saveWarehouseStock(testStockInventory())
   })
 })

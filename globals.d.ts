@@ -28,3 +28,9 @@ declare type Order = {
   customerId: string
   date: string
 }
+
+declare type StockInventory = {
+  productId: string
+  warehouseId: string
+  quantity: number
+}

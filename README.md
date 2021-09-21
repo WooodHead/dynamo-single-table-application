@@ -83,7 +83,7 @@ sample record
 
 ### Warehouse
 
-sample record
+sample warehouse record
 
 ```
 {
@@ -111,6 +111,25 @@ sample record
     },
     "entityType": {
         "S": "warehouse"
+    }
+},
+```
+
+sample stock inventory record
+
+```
+{
+    "pk": {
+        "S": "p#da5f95b9-ae14-49c5-829e-cbb1e4edeea9"
+    },
+    "sk": {
+        "S": "w#781e14ba-9dda-4a4b-96c2-91bf0240d4fb"
+    },
+    "quantity": {
+        "N": "51"
+    },
+    "entityType": {
+        "S": "warehouseStock"
     }
 },
 ```

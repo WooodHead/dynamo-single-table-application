@@ -4,7 +4,7 @@ import { DDB_TABLE } from '../constants'
 import { v4 as uuidv4 } from 'uuid'
 import { addPrefix, removePrefix } from '../utils'
 
-const PREFIX = 'p#'
+export const PRODUCT_PREFIX = 'p#'
 const entityType = 'product'
 
 const dynamoRecordToRecord = (record: any): Product => {
@@ -12,7 +12,7 @@ const dynamoRecordToRecord = (record: any): Product => {
 
   return omit(['sk', 'entityType'], {
     ...data,
-    id: removePrefix(pk, PREFIX)
+    id: removePrefix(pk, PRODUCT_PREFIX)
   }) as Product
 }
 
@@ -23,8 +23,8 @@ export const productServiceFactory = (client: DynamoClient) => {
       .getItem({
         TableName: DDB_TABLE,
         Key: {
-          pk: addPrefix(id, PREFIX),
-          sk: addPrefix(id, PREFIX)
+          pk: addPrefix(id, PRODUCT_PREFIX),
+          sk: addPrefix(id, PRODUCT_PREFIX)
         } as any
       })
       .then(({ Item }) => (Item ? dynamoRecordToRecord(Item) : undefined))
@@ -34,11 +34,11 @@ export const productServiceFactory = (client: DynamoClient) => {
     price,
     name
   }: Product): Promise<Product> => {
-    const _id = id ? removePrefix(id, PREFIX) : uuidv4()
+    const _id = id ? removePrefix(id, PRODUCT_PREFIX) : uuidv4()
 
     const record = {
-      pk: addPrefix(_id, PREFIX),
-      sk: addPrefix(_id, PREFIX),
+      pk: addPrefix(_id, PRODUCT_PREFIX),
+      sk: addPrefix(_id, PRODUCT_PREFIX),
       price,
       name,
       entityType
