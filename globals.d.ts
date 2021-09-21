@@ -3,3 +3,9 @@ declare type Customer = {
   email: string
   name: string
 }
+
+declare type Product = {
+  id?: string
+  price: number
+  name: string
+}

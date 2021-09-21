@@ -26,6 +26,12 @@ describe('customers', () => {
     expect(result).toEqual(customer)
   })
 
+  it('get customer not found returns undefined', async () => {
+    const result = await service.getCustomerById('this-id-does-not-exist')
+
+    expect(result).toEqual(undefined)
+  })
+
   it('edits an existing customer', async () => {
     const customer = testCustomer()
 

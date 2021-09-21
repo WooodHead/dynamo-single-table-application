@@ -43,6 +43,30 @@ sample record
 }
 ```
 
+### Products
+
+sample record
+
+```
+{
+    "pk": {
+        "S": "p#bc57f47a-4df6-4a89-9e4e-308b38f31310"
+    },
+    "sk": {
+        "S": "p#bc57f47a-4df6-4a89-9e4e-308b38f31310"
+    },
+    "name": {
+        "S": "vacuum cleaner"
+    },
+    "price": {
+        "N": "908.55"
+    },
+    "entityType": {
+        "S": "product"
+    }
+},
+```
+
 ## References
 
 This work is largely taken from and inspired by the following sources:
