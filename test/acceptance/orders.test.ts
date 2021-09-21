@@ -54,4 +54,8 @@ describe('orders', () => {
   it('saves an order invoice', async () => {
     await service.saveOrderInvoice(testInvoice())
   })
+
+  it('saves an order invoice with no payments', async () => {
+    await service.saveOrderInvoice(testInvoice({ payments: undefined }))
+  })
 })

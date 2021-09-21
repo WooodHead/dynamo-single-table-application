@@ -38,7 +38,7 @@ export const orderServiceFactory = (client: DynamoClient) => {
 
   const saveCustomerOrder = async ({
     id,
-    date,
+    date = new Date().toISOString(),
     customerId
   }: Order): Promise<Order> => {
     const _id = id ? removePrefix(id, ORDER_PREFIX) : uuidv4()
@@ -63,9 +63,9 @@ export const orderServiceFactory = (client: DynamoClient) => {
   const saveOrderInvoice = async ({
     id,
     orderId,
-    payments,
+    payments = [],
     amount,
-    date
+    date = new Date().toISOString()
   }: Invoice) => {
     const _id = id ? removePrefix(id, INVOICE_PREFIX) : uuidv4()
 

@@ -26,7 +26,7 @@ declare type Warehouse = {
 declare type Order = {
   id?: string
   customerId: string
-  date: string
+  date?: string
 }
 
 declare type StockInventory = {
@@ -47,5 +47,5 @@ declare type Invoice = {
   orderId: string
   payments: Payment[]
   amount: number
-  date: string
+  date?: string
 }
