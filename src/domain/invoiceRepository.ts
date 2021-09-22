@@ -52,7 +52,9 @@ export const invoiceRepositoryFactory = (client: DynamoClient) => {
     }
   }
 
-  const getInvoiceById = async (id: string): Promise<Invoice | undefined> =>
+  const getInvoiceById = async (
+    invoiceId: string
+  ): Promise<Invoice | undefined> =>
     client
       .query({
         TableName: DDB_TABLE,
@@ -63,8 +65,31 @@ export const invoiceRepositoryFactory = (client: DynamoClient) => {
           '#gsi1_sk': 'gsi1_sk'
         },
         ExpressionAttributeValues: {
-          ':gsi1_pk': addPrefix(id, INVOICE_PREFIX),
-          ':gsi1_sk': addPrefix(id, INVOICE_PREFIX)
+          ':gsi1_pk': addPrefix(invoiceId, INVOICE_PREFIX),
+          ':gsi1_sk': addPrefix(invoiceId, INVOICE_PREFIX)
+        }
+      } as QueryInput)
+      .then(res => {
+        const record = pathOr<Invoice | undefined>(
+          undefined,
+          ['Items', '0'],
+          res
+        )
+        return record ? dynamoRecordToRecord(record) : undefined
+      })
+
+  const getInvoiceByOrderId = async (orderId: string) =>
+    client
+      .query({
+        TableName: DDB_TABLE,
+        KeyConditionExpression: '#pk = :pk and begins_with (#sk, :sk)',
+        ExpressionAttributeNames: {
+          '#pk': 'pk',
+          '#sk': 'sk'
+        },
+        ExpressionAttributeValues: {
+          ':pk': addPrefix(orderId, ORDER_PREFIX),
+          ':sk': INVOICE_PREFIX
         }
       } as QueryInput)
       .then(res => {
@@ -78,6 +103,7 @@ export const invoiceRepositoryFactory = (client: DynamoClient) => {
 
   return {
     saveOrderInvoice,
-    getInvoiceById
+    getInvoiceById,
+    getInvoiceByOrderId
   }
 }
