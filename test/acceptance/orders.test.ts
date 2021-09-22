@@ -1,7 +1,12 @@
 import { orderRepositoryFactory } from '../../src/domain/orderRepository'
 import { testDynamoClient } from '../awsTestClients'
 import { testOrder, testOrderItem, testShipmentItem } from '../testFactories'
-import { createOrders, createProducts, promiseTimeout } from '../testUtils'
+import {
+  createCustomers,
+  createOrders,
+  createProducts,
+  promiseTimeout
+} from '../testUtils'
 
 const repository = orderRepositoryFactory(testDynamoClient)
 
@@ -112,6 +117,47 @@ describe('orders', () => {
 
     const emptyResults = await repository.getOrderItemsByProductId(
       productId,
+      to,
+      to
+    )
+
+    expect(emptyResults).toEqual([])
+  })
+
+  it('gets all order items by customer', async () => {
+    const from = new Date().toISOString()
+
+    const customers = await createCustomers(5)
+    const customerId = customers[0].id!
+
+    const orderItem1 = testOrderItem({ customerId })
+    const orderItem2 = testOrderItem({ customerId })
+    const orderItem3 = testOrderItem()
+    const orderItem4 = testOrderItem()
+    const orderItem5 = testOrderItem({ customerId })
+
+    await repository.saveOrderItem(orderItem1)
+    await repository.saveOrderItem(orderItem2)
+    await repository.saveOrderItem(orderItem3)
+    await repository.saveOrderItem(orderItem4)
+    await repository.saveOrderItem(orderItem5)
+
+    await promiseTimeout(200)
+
+    const to = new Date().toISOString()
+
+    const results = await repository.getOrderItemsByCustomerId(
+      customerId,
+      from,
+      to
+    )
+
+    expect(results).toEqual(
+      expect.arrayContaining([orderItem1, orderItem2, orderItem5])
+    )
+
+    const emptyResults = await repository.getOrderItemsByCustomerId(
+      customerId,
       to,
       to
     )

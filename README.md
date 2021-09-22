@@ -76,8 +76,7 @@ awslocal dynamodb scan --table-name table --index-name gsi2
 12. get shipments by warehouse id (GSI2)
 13. get product inventory by warehouse id (GSI1)
 14. get invoices by customer id within a date range (GSI2)
-    --- todo ---
-15. get product orders by customer id within a date range (GSI2)
+15. get order items by customer id within a date range (GSI2)
 
 ### Key prefixes
 
@@ -270,27 +269,33 @@ order item sample record
 ```
 {
     "pk": {
-        "S": "o#0cface48-4d49-472f-9576-62ac39eb67f9"
+        "S": "o#9e346e0c-8e44-4088-b212-d42e4cd62c93"
     },
     "sk": {
-        "S": "p#4e86ea63-f312-4da0-981f-50996c946644"
+        "S": "p#06d18c7e-0c30-40fa-9bdc-d50b4ebafae2"
     },
     "gsi1_pk": {
-        "S": "p#4e86ea63-f312-4da0-981f-50996c946644"
+        "S": "p#06d18c7e-0c30-40fa-9bdc-d50b4ebafae2"
     },
     "gsi1_sk": {
-        "S": "2021-09-22T15:04:05.020Z"
-    }
+        "S": "2021-09-22T17:31:57.136Z"
+    },
+    "gsi2_pk": {
+        "S": "c#64d9d6ae-7559-4186-8213-2236936ccab0"
+    },
+    "gsi2_sk": {
+        "S": "2021-09-22T17:31:57.136Z"
+    },
     "quantity": {
-        "N": "2"
+        "N": "5"
     },
     "price": {
-        "N": "421.51"
+        "N": "23038"
     },
     "entityType": {
         "S": "orderItem"
-    }
-}
+    },
+},
 ```
 
 order shipment sample record

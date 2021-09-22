@@ -71,6 +71,7 @@ export const testOrderItem = (
 ): OrderItem => ({
   orderId: datatype.uuid(),
   productId: datatype.uuid(),
+  customerId: datatype.uuid(),
   price: datatype.number(),
   quantity: datatype.number(100),
   ...overrides

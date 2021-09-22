@@ -24,12 +24,13 @@ const dynamoRecordToRecord = (record: any): Order => {
 }
 
 const dynamoRecordToOrderItemRecord = (record: any): OrderItem => {
-  const { pk, sk, ...data } = record
+  const { pk, sk, gsi2_pk, ...data } = record
 
-  return omit(['entityType', 'gsi1_pk', 'gsi1_sk'], {
+  return omit(['entityType', 'gsi1_pk', 'gsi1_sk', 'gsi2_sk'], {
     ...data,
     orderId: removePrefix(pk, ORDER_PREFIX),
-    productId: removePrefix(sk, PRODUCT_PREFIX)
+    productId: removePrefix(sk, PRODUCT_PREFIX),
+    customerId: removePrefix(gsi2_pk, CUSTOMER_PREFIX)
   }) as OrderItem
 }
 
@@ -76,14 +77,18 @@ export const orderRepositoryFactory = (client: DynamoClient) => {
   const saveOrderItem = async ({
     productId,
     orderId,
+    customerId,
     price,
     quantity
   }: OrderItem) => {
+    const date = new Date().toISOString()
     const record = {
       pk: addPrefix(orderId, ORDER_PREFIX),
       sk: addPrefix(productId, PRODUCT_PREFIX),
       gsi1_pk: addPrefix(productId, PRODUCT_PREFIX),
-      gsi1_sk: new Date().toISOString(),
+      gsi1_sk: date,
+      gsi2_pk: addPrefix(customerId, CUSTOMER_PREFIX),
+      gsi2_sk: date,
       price,
       quantity,
       entityType: orderItemEntityType
@@ -160,12 +165,40 @@ export const orderRepositoryFactory = (client: DynamoClient) => {
         )
       )
 
+  const getOrderItemsByCustomerId = async (
+    customerId: string,
+    from: string,
+    to: string
+  ) =>
+    client
+      .query({
+        TableName: DDB_TABLE,
+        IndexName: 'gsi2',
+        KeyConditionExpression:
+          '#gsi2_pk = :gsi2_pk and #gsi2_sk between :from and :to',
+        ExpressionAttributeNames: {
+          '#gsi2_pk': 'gsi2_pk',
+          '#gsi2_sk': 'gsi2_sk'
+        },
+        ExpressionAttributeValues: {
+          ':gsi2_pk': addPrefix(customerId, CUSTOMER_PREFIX),
+          ':from': from,
+          ':to': to
+        }
+      } as QueryInput)
+      .then(res =>
+        pathOr<OrderItem[]>([], ['Items'], res).map(
+          dynamoRecordToOrderItemRecord
+        )
+      )
+
   return {
     getCustomerOrderById,
     saveCustomerOrder,
     saveOrderItem,
     saveOrderShipmentItem,
     getOrderItemsByOrderId,
-    getOrderItemsByProductId
+    getOrderItemsByProductId,
+    getOrderItemsByCustomerId
   }
 }
