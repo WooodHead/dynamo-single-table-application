@@ -50,6 +50,7 @@ yarn purge
 ```bash
 awslocal dynamodb scan --table-name table
 awslocal dynamodb scan --table-name table --index-name gsi1
+awslocal dynamodb scan --table-name table --index-name gsi2
 ```
 
 ## Table design
@@ -71,6 +72,11 @@ awslocal dynamodb scan --table-name table --index-name gsi1
 9. get order items by order id
 10. get order items by product id within a date range (GSI1)
 11. get shipment by shipment id (GSI1)
+    --- todo ---
+12. get shipments by warehouse id (GSI2)
+13. get product inventory by warehouse id (GSI2)
+14. get invoices by customer id within a date range (GSI2)
+15. get products by customer id within a date range (GSI2)
 
 ### Key prefixes
 
