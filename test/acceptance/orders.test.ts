@@ -109,6 +109,14 @@ describe('orders', () => {
     expect(results).toEqual(
       expect.arrayContaining([orderItem1, orderItem3, orderItem5])
     )
+
+    const emptyResults = await repository.getOrderItemsByProductId(
+      productId,
+      to,
+      to
+    )
+
+    expect(emptyResults).toEqual([])
   })
 
   it('saves a shipment item', async () => {

@@ -69,5 +69,13 @@ describe('invoices', () => {
     expect(results).toEqual(
       expect.arrayContaining([invoice1, invoice2, invoice5])
     )
+
+    const emptyResults = await repository.getInvoicesByCustomerId(
+      customerId,
+      to,
+      to
+    )
+
+    expect(emptyResults).toEqual([])
   })
 })
