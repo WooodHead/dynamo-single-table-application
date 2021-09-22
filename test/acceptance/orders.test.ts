@@ -1,4 +1,4 @@
-import { orderServiceFactory } from '../../src/domain/orderService'
+import { orderRepositoryFactory } from '../../src/domain/orderRepository'
 import { testDynamoClient } from '../awsTestClients'
 import {
   testInvoice,
@@ -8,13 +8,13 @@ import {
   testShipmentItem
 } from '../testFactories'
 
-const service = orderServiceFactory(testDynamoClient)
+const repository = orderRepositoryFactory(testDynamoClient)
 
 describe('orders', () => {
   it('adds a new order without order id', async () => {
     const order = testOrder({ id: undefined })
 
-    const result = await service.saveCustomerOrder(order)
+    const result = await repository.saveCustomerOrder(order)
 
     expect(result).toEqual({
       id: expect.any(String),
@@ -26,13 +26,13 @@ describe('orders', () => {
   it('adds a new order with order id', async () => {
     const order = testOrder()
 
-    const result = await service.saveCustomerOrder(order)
+    const result = await repository.saveCustomerOrder(order)
 
     expect(result).toEqual(order)
   })
 
   it('get order not found returns undefined', async () => {
-    const result = await service.getCustomerOrderById(
+    const result = await repository.getCustomerOrderById(
       'this-order-id-does-not-exist',
       'this-customer-id-does-not-exist'
     )
@@ -43,13 +43,13 @@ describe('orders', () => {
   it('edits an existing order', async () => {
     const order = testOrder()
 
-    await service.saveCustomerOrder(order)
-    const updated = await service.saveCustomerOrder({
+    await repository.saveCustomerOrder(order)
+    const updated = await repository.saveCustomerOrder({
       ...order,
       date: new Date().toISOString()
     })
 
-    const result = await service.getCustomerOrderById(
+    const result = await repository.getCustomerOrderById(
       order.id!,
       order.customerId
     )
@@ -58,22 +58,22 @@ describe('orders', () => {
   })
 
   it('saves an order invoice', async () => {
-    await service.saveOrderInvoice(testInvoice())
+    await repository.saveOrderInvoice(testInvoice())
   })
 
   it('saves an order invoice with no payments', async () => {
-    await service.saveOrderInvoice(testInvoice({ payments: undefined }))
+    await repository.saveOrderInvoice(testInvoice({ payments: undefined }))
   })
 
   it('saves an order item', async () => {
-    await service.saveOrderItem(testOrderItem())
+    await repository.saveOrderItem(testOrderItem())
   })
 
   it('saves a shipment', async () => {
-    await service.saveOrderShipment(testShipment())
+    await repository.saveOrderShipment(testShipment())
   })
 
   it('saves a shipment item', async () => {
-    await service.saveOrderShipmentItem(testShipmentItem())
+    await repository.saveOrderShipmentItem(testShipmentItem())
   })
 })

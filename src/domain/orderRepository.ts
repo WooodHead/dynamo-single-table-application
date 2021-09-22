@@ -3,8 +3,8 @@ import { DynamoClient } from '../dynamoClient'
 import { DDB_TABLE } from '../constants'
 import { v4 as uuidv4 } from 'uuid'
 import { addPrefix, removePrefix } from '../utils'
-import { CUSTOMER_PREFIX } from './customerService'
-import { PRODUCT_PREFIX } from './productService'
+import { CUSTOMER_PREFIX } from './customerRepository'
+import { PRODUCT_PREFIX } from './productRepository'
 
 const ORDER_PREFIX = 'o#'
 const INVOICE_PREFIX = 'i#'
@@ -27,7 +27,7 @@ const dynamoRecordToRecord = (record: any): Order => {
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const orderServiceFactory = (client: DynamoClient) => {
+export const orderRepositoryFactory = (client: DynamoClient) => {
   const getCustomerOrderById = async (
     orderId: string,
     customerId: string

@@ -4,42 +4,42 @@ import { DDB_TABLE } from '../constants'
 import { v4 as uuidv4 } from 'uuid'
 import { addPrefix, removePrefix } from '../utils'
 
-export const PRODUCT_PREFIX = 'p#'
-const entityType = 'product'
+export const CUSTOMER_PREFIX = 'c#'
+const entityType = 'customer'
 
-const dynamoRecordToRecord = (record: any): Product => {
+const dynamoRecordToRecord = (record: any): Customer => {
   const { pk, ...data } = record
 
   return omit(['sk', 'entityType'], {
     ...data,
-    id: removePrefix(pk, PRODUCT_PREFIX)
-  }) as Product
+    id: removePrefix(pk, CUSTOMER_PREFIX)
+  }) as Customer
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const productServiceFactory = (client: DynamoClient) => {
-  const getProductById = async (id: string): Promise<Product | undefined> =>
+export const customerRepositoryFactory = (client: DynamoClient) => {
+  const getCustomerById = async (id: string): Promise<Customer | undefined> =>
     client
       .getItem({
         TableName: DDB_TABLE,
         Key: {
-          pk: addPrefix(id, PRODUCT_PREFIX),
-          sk: addPrefix(id, PRODUCT_PREFIX)
+          pk: addPrefix(id, CUSTOMER_PREFIX),
+          sk: addPrefix(id, CUSTOMER_PREFIX)
         } as any
       })
       .then(({ Item }) => (Item ? dynamoRecordToRecord(Item) : undefined))
 
-  const saveProduct = async ({
+  const saveCustomer = async ({
     id,
-    price,
+    email,
     name
-  }: Product): Promise<Product> => {
-    const _id = id ? removePrefix(id, PRODUCT_PREFIX) : uuidv4()
+  }: Customer): Promise<Customer> => {
+    const _id = id ? removePrefix(id, CUSTOMER_PREFIX) : uuidv4()
 
     const record = {
-      pk: addPrefix(_id, PRODUCT_PREFIX),
-      sk: addPrefix(_id, PRODUCT_PREFIX),
-      price,
+      pk: addPrefix(_id, CUSTOMER_PREFIX),
+      sk: addPrefix(_id, CUSTOMER_PREFIX),
+      email,
       name,
       entityType
     }
@@ -48,13 +48,13 @@ export const productServiceFactory = (client: DynamoClient) => {
 
     return {
       id: _id,
-      price,
+      email,
       name
     }
   }
 
   return {
-    getProductById,
-    saveProduct
+    getCustomerById,
+    saveCustomer
   }
 }

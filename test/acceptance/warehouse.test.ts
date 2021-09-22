@@ -1,4 +1,4 @@
-import { warehouseServiceFactory } from '../../src/domain/warehouseService'
+import { warehouseRepositoryFactory } from '../../src/domain/warehouseRepository'
 import { testDynamoClient } from '../awsTestClients'
 import {
   testAddress,
@@ -6,13 +6,13 @@ import {
   testWarehouse
 } from '../testFactories'
 
-const service = warehouseServiceFactory(testDynamoClient)
+const repository = warehouseRepositoryFactory(testDynamoClient)
 
 describe('warehouses', () => {
   it('adds a new warehouse without id', async () => {
     const warehouse = testWarehouse({ id: undefined })
 
-    const result = await service.saveWarehouse(warehouse)
+    const result = await repository.saveWarehouse(warehouse)
 
     expect(result).toEqual({
       id: expect.any(String),
@@ -23,13 +23,13 @@ describe('warehouses', () => {
   it('adds a new warehouse with id', async () => {
     const warehouse = testWarehouse()
 
-    const result = await service.saveWarehouse(warehouse)
+    const result = await repository.saveWarehouse(warehouse)
 
     expect(result).toEqual(warehouse)
   })
 
   it('get warehouse not found returns undefined', async () => {
-    const result = await service.getWarehouseById('this-id-does-not-exist')
+    const result = await repository.getWarehouseById('this-id-does-not-exist')
 
     expect(result).toEqual(undefined)
   })
@@ -37,18 +37,18 @@ describe('warehouses', () => {
   it('edits an existing warehouse', async () => {
     const warehouse = testWarehouse()
 
-    await service.saveWarehouse(warehouse)
-    const updated = await service.saveWarehouse({
+    await repository.saveWarehouse(warehouse)
+    const updated = await repository.saveWarehouse({
       ...warehouse,
       address: testAddress()
     })
 
-    const result = await service.getWarehouseById(warehouse.id!)
+    const result = await repository.getWarehouseById(warehouse.id!)
 
     expect(result).toEqual(updated)
   })
 
   it('saves stock items', async () => {
-    await service.saveWarehouseStock(testStockInventory())
+    await repository.saveWarehouseStock(testStockInventory())
   })
 })

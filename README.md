@@ -274,7 +274,7 @@ order shipment item sample record
         "S": "4c3af2cc-a376-4e5e-a048-fd3e10a58ae5"
     },
     "quantity": {
-        "N": "0"
+        "N": "3"
     },
     "entityType": {
         "S": "shipmentItem"

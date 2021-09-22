@@ -3,7 +3,7 @@ import { DynamoClient } from '../dynamoClient'
 import { DDB_TABLE } from '../constants'
 import { v4 as uuidv4 } from 'uuid'
 import { addPrefix, removePrefix } from '../utils'
-import { PRODUCT_PREFIX } from './productService'
+import { PRODUCT_PREFIX } from './productRepository'
 
 const WAREHOUSE_PREFIX = 'w#'
 const entityType = 'warehouse'
@@ -19,7 +19,7 @@ const dynamoRecordToRecord = (record: any): Warehouse => {
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const warehouseServiceFactory = (client: DynamoClient) => {
+export const warehouseRepositoryFactory = (client: DynamoClient) => {
   const getWarehouseById = async (id: string): Promise<Warehouse | undefined> =>
     client
       .getItem({
