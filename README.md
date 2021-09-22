@@ -73,8 +73,8 @@ awslocal dynamodb scan --table-name table --index-name gsi2
 10. get order items by product id within a date range (GSI1)
 11. get shipment by shipment id (GSI1)
 12. get shipments by warehouse id (GSI2)
+13. get product inventory by warehouse id (GSI1)
     --- todo ---
-13. get product inventory by warehouse id (GSI2)
 14. get invoices by customer id within a date range (GSI2)
 15. get products by customer id within a date range (GSI2)
 
@@ -175,13 +175,19 @@ sample stock inventory record
 ```
 {
     "pk": {
-        "S": "p#da5f95b9-ae14-49c5-829e-cbb1e4edeea9"
+        "S": "p#22208b4f-9858-4f5b-950b-3429fa985f57"
     },
     "sk": {
-        "S": "w#781e14ba-9dda-4a4b-96c2-91bf0240d4fb"
+        "S": "w#3602495c-75e5-451f-a9a1-5c259b5bcb3e"
+    },
+    "gsi1_pk": {
+        "S": "w#3602495c-75e5-451f-a9a1-5c259b5bcb3e"
+    },
+    "gsi1_sk": {
+        "S": "p#22208b4f-9858-4f5b-950b-3429fa985f57"
     },
     "quantity": {
-        "N": "51"
+        "N": "5"
     },
     "entityType": {
         "S": "warehouseStock"

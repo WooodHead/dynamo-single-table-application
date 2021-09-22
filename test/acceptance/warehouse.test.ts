@@ -93,4 +93,49 @@ describe('warehouses', () => {
       expect.arrayContaining([stockRecord1, stockRecord3])
     )
   })
+
+  it('gets stock inventory by warehouse id', async () => {
+    const warehouses = await createWarehouses(4)
+    const products = await createProducts(10)
+
+    const stockRecord1 = testStockInventory({
+      productId: products[0].id,
+      warehouseId: warehouses[0].id
+    })
+    const stockRecord2 = testStockInventory({
+      productId: products[1].id,
+      warehouseId: warehouses[0].id
+    })
+    const stockRecord3 = testStockInventory({
+      productId: products[0].id,
+      warehouseId: warehouses[1].id
+    })
+    const stockRecord4 = testStockInventory({
+      productId: products[1].id,
+      warehouseId: warehouses[1].id
+    })
+    const stockRecord5 = testStockInventory({
+      productId: products[2].id,
+      warehouseId: warehouses[2].id
+    })
+
+    const stockRecords = [
+      stockRecord1,
+      stockRecord2,
+      stockRecord3,
+      stockRecord4,
+      stockRecord5
+    ]
+
+    await Promise.all([stockRecords.map(repository.saveWarehouseStock)])
+
+    await promiseTimeout(200)
+
+    const inventoryCheckProduct0 =
+      await repository.getStockInventoryByWarehouseId(warehouses[0].id!)
+
+    expect(inventoryCheckProduct0).toEqual(
+      expect.arrayContaining([stockRecord1, stockRecord2])
+    )
+  })
 })

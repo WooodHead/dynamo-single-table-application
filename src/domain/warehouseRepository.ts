@@ -22,7 +22,7 @@ const dynamoRecordToRecord = (record: any): Warehouse => {
 const dynamoRecordToStockInventoryRecord = (record: any): StockInventory => {
   const { pk, sk, ...data } = record
 
-  return omit(['entityType'], {
+  return omit(['entityType', 'gsi1_pk', 'gsi1_sk'], {
     ...data,
     productId: removePrefix(pk, PRODUCT_PREFIX),
     warehouseId: removePrefix(sk, WAREHOUSE_PREFIX)
@@ -71,6 +71,8 @@ export const warehouseRepositoryFactory = (client: DynamoClient) => {
     const record = {
       pk: addPrefix(productId, PRODUCT_PREFIX),
       sk: addPrefix(warehouseId, WAREHOUSE_PREFIX),
+      gsi1_pk: addPrefix(warehouseId, WAREHOUSE_PREFIX),
+      gsi1_sk: addPrefix(productId, PRODUCT_PREFIX),
       quantity,
       entityType: stockEntityType
     }
@@ -98,10 +100,33 @@ export const warehouseRepositoryFactory = (client: DynamoClient) => {
         )
       )
 
+  const getStockInventoryByWarehouseId = async (warehouseId: string) =>
+    client
+      .query({
+        TableName: DDB_TABLE,
+        IndexName: 'gsi1',
+        KeyConditionExpression:
+          '#gsi1_pk = :gsi1_pk and begins_with (#gsi1_sk, :gsi1_sk)',
+        ExpressionAttributeNames: {
+          '#gsi1_pk': 'gsi1_pk',
+          '#gsi1_sk': 'gsi1_sk'
+        },
+        ExpressionAttributeValues: {
+          ':gsi1_pk': addPrefix(warehouseId, WAREHOUSE_PREFIX),
+          ':gsi1_sk': PRODUCT_PREFIX
+        }
+      } as QueryInput)
+      .then(res =>
+        pathOr<StockInventory[]>([], ['Items'], res).map(
+          dynamoRecordToStockInventoryRecord
+        )
+      )
+
   return {
     getWarehouseById,
     saveWarehouse,
     saveWarehouseStock,
-    getStockInventoryByProductId
+    getStockInventoryByProductId,
+    getStockInventoryByWarehouseId
   }
 }
