@@ -4,6 +4,18 @@ An eCommerce application using a single [DynamoDb](https://aws.amazon.com/dynamo
 
 ![DynamoDb](./design/DynamoDB.png)
 
+- [References](#references)
+- [Environment setup](#environment-setup)
+- [Testing](#testing)
+- [AWS commands](#aws-commands)
+- [Table design](#table-design)
+  - [Access patterns](#access-patterns)
+  - [Key prefixes](#key-prefixes)
+  - [Customers](#customers)
+  - [Products](#products)
+  - [Warehouse](#warehouse)
+  - [Orders](#orders)
+
 ## References
 
 This work is largely taken from and inspired by the following sources:
