@@ -37,7 +37,7 @@ todo
 - `o#` = order
 - `i#` = invoice
 - `s#` = shipment
-- `si#` = shipment item
+- `d#` = shipment item (delivery)
 
 ### Customers
 
@@ -253,6 +253,31 @@ order shipment sample record
     },
     "entityType": {
         "S": "shipment"
+    }
+},
+```
+
+order shipment item sample record
+
+```
+ {
+    "pk": {
+        "S": "o#8d15df01-8b88-4c06-9a05-8076afdbd390"
+    },
+    "sk": {
+        "S": "d#5834894c-e528-4c7f-b989-9e28c08e6e71"
+    },
+    "productId": {
+        "S": "13d8acb6-a811-4b3c-b243-359b4f0245e0"
+    },
+    "shipmentId": {
+        "S": "4c3af2cc-a376-4e5e-a048-fd3e10a58ae5"
+    },
+    "quantity": {
+        "N": "0"
+    },
+    "entityType": {
+        "S": "shipmentItem"
     }
 },
 ```

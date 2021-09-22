@@ -66,3 +66,11 @@ declare type Shipment = {
   address: Address
   date: string
 }
+
+declare type ShipmentItem = {
+  id?: string
+  orderId: string
+  productId: string
+  shipmentId: string
+  quantity: number
+}
