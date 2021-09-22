@@ -1,7 +1,7 @@
 import { orderRepositoryFactory } from '../../src/domain/orderRepository'
 import { testDynamoClient } from '../awsTestClients'
 import { testOrder, testOrderItem, testShipmentItem } from '../testFactories'
-import { createOrders, promiseTimeout } from '../testUtils'
+import { createOrders, createProducts, promiseTimeout } from '../testUtils'
 
 const repository = orderRepositoryFactory(testDynamoClient)
 
@@ -52,7 +52,7 @@ describe('orders', () => {
     expect(result).toEqual(updated)
   })
 
-  it('get products by order id', async () => {
+  it('get order items by order id', async () => {
     const orders = await createOrders(4)
 
     const orderItem1 = testOrderItem({ orderId: orders[0].id! })
@@ -75,6 +75,40 @@ describe('orders', () => {
     const results = await repository.getOrderItemsByOrderId(orders[0].id!)
 
     expect(results).toEqual(expect.arrayContaining([orderItem1, orderItem2]))
+  })
+
+  it('get order items by product id', async () => {
+    const from = new Date().toISOString()
+
+    const orders = await createOrders(4)
+    const products = await createProducts(10)
+    const productId = products[0].id!
+
+    const orderItem1 = testOrderItem({ orderId: orders[0].id!, productId })
+    const orderItem2 = testOrderItem({ orderId: orders[0].id! })
+    const orderItem3 = testOrderItem({ orderId: orders[1].id!, productId })
+    const orderItem4 = testOrderItem({ orderId: orders[1].id! })
+    const orderItem5 = testOrderItem({ orderId: orders[2].id!, productId })
+
+    await repository.saveOrderItem(orderItem1)
+    await repository.saveOrderItem(orderItem2)
+    await repository.saveOrderItem(orderItem3)
+    await repository.saveOrderItem(orderItem4)
+    await repository.saveOrderItem(orderItem5)
+
+    await promiseTimeout(200)
+
+    const to = new Date().toISOString()
+
+    const results = await repository.getOrderItemsByProductId(
+      productId,
+      from,
+      to
+    )
+
+    expect(results).toEqual(
+      expect.arrayContaining([orderItem1, orderItem3, orderItem5])
+    )
   })
 
   it('saves a shipment item', async () => {

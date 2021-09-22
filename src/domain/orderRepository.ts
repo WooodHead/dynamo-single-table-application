@@ -26,7 +26,7 @@ const dynamoRecordToRecord = (record: any): Order => {
 const dynamoRecordToOrderItemRecord = (record: any): OrderItem => {
   const { pk, sk, ...data } = record
 
-  return omit(['entityType'], {
+  return omit(['entityType', 'gsi1_pk', 'gsi1_sk'], {
     ...data,
     orderId: removePrefix(pk, ORDER_PREFIX),
     productId: removePrefix(sk, PRODUCT_PREFIX)
@@ -82,6 +82,8 @@ export const orderRepositoryFactory = (client: DynamoClient) => {
     const record = {
       pk: addPrefix(orderId, ORDER_PREFIX),
       sk: addPrefix(productId, PRODUCT_PREFIX),
+      gsi1_pk: addPrefix(productId, PRODUCT_PREFIX),
+      gsi1_sk: new Date().toISOString(),
       price,
       quantity,
       entityType: orderItemEntityType
@@ -131,11 +133,39 @@ export const orderRepositoryFactory = (client: DynamoClient) => {
         )
       )
 
+  const getOrderItemsByProductId = async (
+    productId: string,
+    from: string,
+    to: string
+  ) =>
+    client
+      .query({
+        TableName: DDB_TABLE,
+        IndexName: 'gsi1',
+        KeyConditionExpression:
+          '#gsi1_pk = :gsi1_pk and #gsi1_sk between :from and :to',
+        ExpressionAttributeNames: {
+          '#gsi1_pk': 'gsi1_pk',
+          '#gsi1_sk': 'gsi1_sk'
+        },
+        ExpressionAttributeValues: {
+          ':gsi1_pk': addPrefix(productId, PRODUCT_PREFIX),
+          ':from': from,
+          ':to': to
+        }
+      } as QueryInput)
+      .then(res =>
+        pathOr<OrderItem[]>([], ['Items'], res).map(
+          dynamoRecordToOrderItemRecord
+        )
+      )
+
   return {
     getCustomerOrderById,
     saveCustomerOrder,
     saveOrderItem,
     saveOrderShipmentItem,
-    getOrderItemsByOrderId
+    getOrderItemsByOrderId,
+    getOrderItemsByProductId
   }
 }

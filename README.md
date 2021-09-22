@@ -69,6 +69,7 @@ awslocal dynamodb scan --table-name table --index-name gsi1
 7. get shipments by order id
 8. get invoice by order id
 9. get order items by order id
+10. get order items by product id within a date range (GSI1)
 
 ### Key prefixes
 
@@ -254,6 +255,12 @@ order item sample record
     "sk": {
         "S": "p#4e86ea63-f312-4da0-981f-50996c946644"
     },
+    "gsi1_pk": {
+        "S": "p#4e86ea63-f312-4da0-981f-50996c946644"
+    },
+    "gsi1_sk": {
+        "S": "2021-09-22T15:04:05.020Z"
+    }
     "quantity": {
         "N": "2"
     },

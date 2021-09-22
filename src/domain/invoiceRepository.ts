@@ -10,11 +10,11 @@ const INVOICE_PREFIX = 'i#'
 const entityType = 'invoice'
 
 const dynamoRecordToRecord = (record: any): Invoice => {
-  const { gsi1_pk, pk, ...data } = record
+  const { pk, sk, ...data } = record
 
-  return omit(['sk', 'entityType', 'gsi1_sk'], {
+  return omit(['sk', 'entityType', 'gsi1_pk', 'gsi1_sk'], {
     ...data,
-    id: removePrefix(gsi1_pk, INVOICE_PREFIX),
+    id: removePrefix(sk, INVOICE_PREFIX),
     orderId: removePrefix(pk, ORDER_PREFIX)
   }) as Invoice
 }
