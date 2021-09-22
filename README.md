@@ -70,6 +70,7 @@ awslocal dynamodb scan --table-name table --index-name gsi1
 8. get invoice by order id
 9. get order items by order id
 10. get order items by product id within a date range (GSI1)
+11. get shipment by shipment id (GSI1)
 
 ### Key prefixes
 

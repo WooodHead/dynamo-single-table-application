@@ -12,7 +12,7 @@ const entityType = 'shipment'
 const dynamoRecordToRecord = (record: any): Shipment => {
   const { pk, sk, ...data } = record
 
-  return omit(['entityType'], {
+  return omit(['entityType', 'gsi1_pk', 'gsi1_sk'], {
     ...data,
     id: removePrefix(sk, SHIPMENT_PREFIX),
     orderId: removePrefix(pk, ORDER_PREFIX)
@@ -33,6 +33,8 @@ export const shipmentRepositoryFactory = (client: DynamoClient) => {
     const record = {
       pk: addPrefix(orderId, ORDER_PREFIX),
       sk: addPrefix(_id, SHIPMENT_PREFIX),
+      gsi1_pk: addPrefix(_id, SHIPMENT_PREFIX),
+      gsi1_sk: addPrefix(_id, SHIPMENT_PREFIX),
       address,
       type,
       date,
@@ -40,6 +42,14 @@ export const shipmentRepositoryFactory = (client: DynamoClient) => {
     }
 
     await client.putItem(record, DDB_TABLE)
+
+    return {
+      id: _id,
+      orderId,
+      address,
+      type,
+      date
+    }
   }
 
   const getShipmentsByOrderId = async (orderId: string) =>
@@ -60,8 +70,35 @@ export const shipmentRepositoryFactory = (client: DynamoClient) => {
         pathOr<Shipment[]>([], ['Items'], res).map(dynamoRecordToRecord)
       )
 
+  const getShipmentByShipmentId = async (
+    shipmentId: string
+  ): Promise<Shipment | undefined> =>
+    client
+      .query({
+        TableName: DDB_TABLE,
+        IndexName: 'gsi1',
+        KeyConditionExpression: '#gsi1_pk = :gsi1_pk and #gsi1_sk = :gsi1_sk',
+        ExpressionAttributeNames: {
+          '#gsi1_pk': 'gsi1_pk',
+          '#gsi1_sk': 'gsi1_sk'
+        },
+        ExpressionAttributeValues: {
+          ':gsi1_pk': addPrefix(shipmentId, SHIPMENT_PREFIX),
+          ':gsi1_sk': addPrefix(shipmentId, SHIPMENT_PREFIX)
+        }
+      } as QueryInput)
+      .then(res => {
+        const record = pathOr<Shipment | undefined>(
+          undefined,
+          ['Items', '0'],
+          res
+        )
+        return record ? dynamoRecordToRecord(record) : undefined
+      })
+
   return {
     saveOrderShipment,
-    getShipmentsByOrderId
+    getShipmentsByOrderId,
+    getShipmentByShipmentId
   }
 }

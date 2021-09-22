@@ -45,4 +45,14 @@ describe('shipments', () => {
       expect.arrayContaining([shipmentRecord1, shipmentRecord3])
     )
   })
+
+  it('gets an shipment by shipment id', async () => {
+    const expected = await repository.saveOrderShipment(
+      testShipment({ id: undefined })
+    )
+
+    const shipment = await repository.getShipmentByShipmentId(expected.id!)
+
+    expect(shipment).toEqual(expected)
+  })
 })
