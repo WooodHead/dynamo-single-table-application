@@ -27,7 +27,10 @@ yarn purge
 
 ### Access patterns
 
-todo
+1. get customer by customer id
+2. get product by product id
+3. get warehouse by warehouse id
+4. get order by order id
 
 ### Key prefixes
 
@@ -286,6 +289,6 @@ order shipment item sample record
 
 This work is largely taken from and inspired by the following sources:
 
-- [Single-Table Design with DynamoDB - Alex DeBrie, AWS Data Hero](https://youtu.be/BnDKD_Zv0og?t=0)
 - [Fundamentals of Amazon DynamoDB Single Table Design with Rick Houlihan](https://www.youtube.com/watch?v=KYy8X8t4MB8&t=0)
 - [amazon-dynamodb-design-patterns](https://github.com/aws-samples/amazon-dynamodb-design-patterns)
+- [Single-Table Design with DynamoDB - Alex DeBrie, AWS Data Hero](https://youtu.be/BnDKD_Zv0og?t=0)
