@@ -1,6 +1,6 @@
 import { orderServiceFactory } from '../../src/domain/orderService'
 import { testDynamoClient } from '../awsTestClients'
-import { testInvoice, testOrder } from '../testFactories'
+import { testInvoice, testOrder, testOrderItem } from '../testFactories'
 
 const service = orderServiceFactory(testDynamoClient)
 
@@ -57,5 +57,9 @@ describe('orders', () => {
 
   it('saves an order invoice with no payments', async () => {
     await service.saveOrderInvoice(testInvoice({ payments: undefined }))
+  })
+
+  it('saves an order item', async () => {
+    await service.saveOrderItem(testOrderItem())
   })
 })

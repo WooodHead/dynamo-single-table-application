@@ -197,6 +197,28 @@ sample order invoice record
 },
 ```
 
+order item sample record
+
+```
+{
+    "pk": {
+        "S": "o#0cface48-4d49-472f-9576-62ac39eb67f9"
+    },
+    "sk": {
+        "S": "p#4e86ea63-f312-4da0-981f-50996c946644"
+    },
+    "quantity": {
+        "N": "2"
+    },
+    "price": {
+        "N": "421.51"
+    },
+    "entityType": {
+        "S": "orderItem"
+    }
+}
+```
+
 ## References
 
 This work is largely taken from and inspired by the following sources:

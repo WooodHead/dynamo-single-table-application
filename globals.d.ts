@@ -49,3 +49,10 @@ declare type Invoice = {
   amount: number
   date?: string
 }
+
+declare type OrderItem = {
+  productId: string
+  orderId: string
+  price: number
+  quantity: number
+}

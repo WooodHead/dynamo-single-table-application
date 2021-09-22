@@ -4,11 +4,13 @@ import { DDB_TABLE } from '../constants'
 import { v4 as uuidv4 } from 'uuid'
 import { addPrefix, removePrefix } from '../utils'
 import { CUSTOMER_PREFIX } from './customerService'
+import { PRODUCT_PREFIX } from './productService'
 
 const ORDER_PREFIX = 'o#'
 const INVOICE_PREFIX = 'i#'
 const entityType = 'order'
 const invoiceEntityType = 'invoice'
+const orderItemEntityType = 'orderItem'
 
 const dynamoRecordToRecord = (record: any): Order => {
   const { pk, sk, ...data } = record
@@ -67,7 +69,7 @@ export const orderServiceFactory = (client: DynamoClient) => {
     amount,
     date = new Date().toISOString()
   }: Invoice) => {
-    const _id = id ? removePrefix(id, INVOICE_PREFIX) : uuidv4()
+    const _id = id ? id : uuidv4()
 
     const record = {
       pk: addPrefix(orderId, ORDER_PREFIX),
@@ -81,9 +83,27 @@ export const orderServiceFactory = (client: DynamoClient) => {
     await client.putItem(record, DDB_TABLE)
   }
 
+  const saveOrderItem = async ({
+    productId,
+    orderId,
+    price,
+    quantity
+  }: OrderItem) => {
+    const record = {
+      pk: addPrefix(orderId, ORDER_PREFIX),
+      sk: addPrefix(productId, PRODUCT_PREFIX),
+      price,
+      quantity,
+      entityType: orderItemEntityType
+    }
+
+    await client.putItem(record, DDB_TABLE)
+  }
+
   return {
     getCustomerOrderById,
     saveCustomerOrder,
-    saveOrderInvoice
+    saveOrderInvoice,
+    saveOrderItem
   }
 }

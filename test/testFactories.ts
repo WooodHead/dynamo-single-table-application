@@ -64,3 +64,13 @@ export const testInvoice = (overrides: Partial<Invoice> = {}): Invoice => ({
   date: new Date().toISOString(),
   ...overrides
 })
+
+export const testOrderItem = (
+  overrides: Partial<OrderItem> = {}
+): OrderItem => ({
+  orderId: datatype.uuid(),
+  productId: datatype.uuid(),
+  price: datatype.number(),
+  quantity: datatype.number(100),
+  ...overrides
+})
