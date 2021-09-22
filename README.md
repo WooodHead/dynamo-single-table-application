@@ -54,6 +54,10 @@ awslocal dynamodb scan --table-name table --index-name gsi1
 
 ## Table design
 
+### ERD
+
+![erd](./design/erd.svg)
+
 ### Access patterns
 
 1. get customer by customer id
