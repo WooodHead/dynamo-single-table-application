@@ -6,12 +6,10 @@ import { addPrefix, removePrefix } from '../utils'
 import { CUSTOMER_PREFIX } from './customerRepository'
 import { PRODUCT_PREFIX } from './productRepository'
 
-const ORDER_PREFIX = 'o#'
-const INVOICE_PREFIX = 'i#'
+export const ORDER_PREFIX = 'o#'
 const SHIPMENT_PREFIX = 's#'
 const SHIPMENT_ITEM_PREFIX = 'd#'
 const entityType = 'order'
-const invoiceEntityType = 'invoice'
 const orderItemEntityType = 'orderItem'
 const shipmentEntityType = 'shipment'
 const shipmentItemEntityType = 'shipmentItem'
@@ -64,27 +62,6 @@ export const orderRepositoryFactory = (client: DynamoClient) => {
       customerId: _customerId,
       date
     }
-  }
-
-  const saveOrderInvoice = async ({
-    id,
-    orderId,
-    payments = [],
-    amount,
-    date = new Date().toISOString()
-  }: Invoice) => {
-    const _id = id ? id : uuidv4()
-
-    const record = {
-      pk: addPrefix(orderId, ORDER_PREFIX),
-      sk: addPrefix(_id, INVOICE_PREFIX),
-      payments,
-      amount,
-      date,
-      entityType: invoiceEntityType
-    }
-
-    await client.putItem(record, DDB_TABLE)
   }
 
   const saveOrderItem = async ({
@@ -149,7 +126,6 @@ export const orderRepositoryFactory = (client: DynamoClient) => {
   return {
     getCustomerOrderById,
     saveCustomerOrder,
-    saveOrderInvoice,
     saveOrderItem,
     saveOrderShipment,
     saveOrderShipmentItem

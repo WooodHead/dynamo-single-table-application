@@ -175,6 +175,12 @@ sample order invoice record
     "sk": {
         "S": "i#6fb083f1-0468-482a-9cdb-ea101b9e49a0"
     },
+    "gsi1_pk": {
+        "S": "i#6fb083f1-0468-482a-9cdb-ea101b9e49a0"
+    },
+    "gsi1_sk": {
+        "S": "i#6fb083f1-0468-482a-9cdb-ea101b9e49a0"
+    },
     "date": {
         "S": "2021-09-21T23:27:09.104Z"
     },

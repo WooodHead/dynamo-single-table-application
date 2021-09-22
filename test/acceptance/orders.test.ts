@@ -1,7 +1,6 @@
 import { orderRepositoryFactory } from '../../src/domain/orderRepository'
 import { testDynamoClient } from '../awsTestClients'
 import {
-  testInvoice,
   testOrder,
   testOrderItem,
   testShipment,
@@ -55,14 +54,6 @@ describe('orders', () => {
     )
 
     expect(result).toEqual(updated)
-  })
-
-  it('saves an order invoice', async () => {
-    await repository.saveOrderInvoice(testInvoice())
-  })
-
-  it('saves an order invoice with no payments', async () => {
-    await repository.saveOrderInvoice(testInvoice({ payments: undefined }))
   })
 
   it('saves an order item', async () => {

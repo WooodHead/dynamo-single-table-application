@@ -13,9 +13,9 @@ Resources:
           AttributeType: S
         - AttributeName: sk
           AttributeType: S
-        - AttributeName: gsi1-pk
+        - AttributeName: gsi1_pk
           AttributeType: S
-        - AttributeName: gsi1-sk
+        - AttributeName: gsi1_sk
           AttributeType: S
       KeySchema:
         - AttributeName: pk
@@ -28,7 +28,7 @@ Resources:
           Projection:
             ProjectionType: ALL
           KeySchema:
-            - AttributeName: gsi1-pk
+            - AttributeName: gsi1_pk
               KeyType: HASH
-            - AttributeName: gsi1-sk
+            - AttributeName: gsi1_sk
               KeyType: RANGE
