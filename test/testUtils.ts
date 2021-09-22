@@ -5,6 +5,7 @@ import { warehouseRepositoryFactory } from '../src/domain/warehouseRepository'
 import { testDynamoClient } from './awsTestClients'
 import {
   testOrder,
+  testOrderItem,
   testProduct,
   testShipment,
   testWarehouse
@@ -30,6 +31,12 @@ export const createProducts = async (quantity: number) => {
   const products = [...Array(quantity)].map(_ => testProduct())
   await Promise.all([products.map(productRepository.saveProduct)])
   return products
+}
+
+export const createOrderItems = async (quantity: number) => {
+  const orderItems = [...Array(quantity)].map(_ => testOrderItem())
+  await Promise.all([orderItems.map(orderRepository.saveOrderItem)])
+  return orderItems
 }
 
 export const createOrders = async (quantity: number) => {

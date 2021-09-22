@@ -1,6 +1,7 @@
 import { orderRepositoryFactory } from '../../src/domain/orderRepository'
 import { testDynamoClient } from '../awsTestClients'
 import { testOrder, testOrderItem, testShipmentItem } from '../testFactories'
+import { createOrders, promiseTimeout } from '../testUtils'
 
 const repository = orderRepositoryFactory(testDynamoClient)
 
@@ -51,8 +52,29 @@ describe('orders', () => {
     expect(result).toEqual(updated)
   })
 
-  it('saves an order item', async () => {
-    await repository.saveOrderItem(testOrderItem())
+  it('get products by order id', async () => {
+    const orders = await createOrders(4)
+
+    const orderItem1 = testOrderItem({ orderId: orders[0].id! })
+    const orderItem2 = testOrderItem({ orderId: orders[0].id! })
+    const orderItem3 = testOrderItem({ orderId: orders[1].id! })
+    const orderItem4 = testOrderItem({ orderId: orders[1].id! })
+    const orderItem5 = testOrderItem({ orderId: orders[2].id! })
+    const orderItems = [
+      orderItem1,
+      orderItem2,
+      orderItem3,
+      orderItem4,
+      orderItem5
+    ]
+
+    await Promise.all([orderItems.map(repository.saveOrderItem)])
+
+    await promiseTimeout(200)
+
+    const results = await repository.getOrderItemsByOrderId(orders[0].id!)
+
+    expect(results).toEqual(expect.arrayContaining([orderItem1, orderItem2]))
   })
 
   it('saves a shipment item', async () => {
