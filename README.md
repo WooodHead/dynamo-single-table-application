@@ -25,6 +25,12 @@ This work is largely taken from and inspired by the following sources:
 - [amazon-dynamodb-design-patterns](https://github.com/aws-samples/amazon-dynamodb-design-patterns)
 - [Single-Table Design with DynamoDB - Alex DeBrie, AWS Data Hero](https://youtu.be/BnDKD_Zv0og?t=0)
 
+## Requirements
+
+- [docker](https://www.docker.com/)
+- [localstack](https://localstack.cloud/)
+- [awslocal](https://github.com/localstack/awscli-local)
+
 ## Environment setup
 
 ```bash
