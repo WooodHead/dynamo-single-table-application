@@ -1,6 +1,16 @@
 # dynamo-single-table-application
 
-An eCommerce application using a single DynamoDb table
+An eCommerce application using a single [DynamoDb](https://aws.amazon.com/dynamodb/) table
+
+![DynamoDb](./design/DynamoDB.png)
+
+## References
+
+This work is largely taken from and inspired by the following sources:
+
+- [Fundamentals of Amazon DynamoDB Single Table Design with Rick Houlihan](https://www.youtube.com/watch?v=KYy8X8t4MB8&t=0)
+- [amazon-dynamodb-design-patterns](https://github.com/aws-samples/amazon-dynamodb-design-patterns)
+- [Single-Table Design with DynamoDB - Alex DeBrie, AWS Data Hero](https://youtu.be/BnDKD_Zv0og?t=0)
 
 ## Environment setup
 
@@ -23,6 +33,13 @@ truncate the dynamo table
 yarn purge
 ```
 
+## AWS commands
+
+```bash
+awslocal dynamodb scan --table-name table
+awslocal dynamodb scan --table-name table --index-name gsi1
+```
+
 ## Table design
 
 ### Access patterns
@@ -32,6 +49,10 @@ yarn purge
 3. get warehouse by warehouse id
 4. get order by order id
 5. get invoice by invoice id (GSI1)
+6. get product inventory by product id for all warehouses
+7. get shipments by order id
+8. get invoice by order id
+9. get products by order id
 
 ### Key prefixes
 
@@ -291,11 +312,3 @@ order shipment item sample record
     }
 },
 ```
-
-## References
-
-This work is largely taken from and inspired by the following sources:
-
-- [Fundamentals of Amazon DynamoDB Single Table Design with Rick Houlihan](https://www.youtube.com/watch?v=KYy8X8t4MB8&t=0)
-- [amazon-dynamodb-design-patterns](https://github.com/aws-samples/amazon-dynamodb-design-patterns)
-- [Single-Table Design with DynamoDB - Alex DeBrie, AWS Data Hero](https://youtu.be/BnDKD_Zv0og?t=0)

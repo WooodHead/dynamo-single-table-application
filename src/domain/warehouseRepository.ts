@@ -1,9 +1,10 @@
-import { omit } from 'ramda'
+import { omit, pathOr } from 'ramda'
 import { DynamoClient } from '../dynamoClient'
 import { DDB_TABLE } from '../constants'
 import { v4 as uuidv4 } from 'uuid'
 import { addPrefix, removePrefix } from '../utils'
 import { PRODUCT_PREFIX } from './productRepository'
+import { QueryInput } from 'aws-sdk/clients/dynamodb'
 
 const WAREHOUSE_PREFIX = 'w#'
 const entityType = 'warehouse'
@@ -16,6 +17,16 @@ const dynamoRecordToRecord = (record: any): Warehouse => {
     ...data,
     id: removePrefix(pk, WAREHOUSE_PREFIX)
   }) as Warehouse
+}
+
+const dynamoRecordToStockInventoryRecord = (record: any): StockInventory => {
+  const { pk, sk, ...data } = record
+
+  return omit(['entityType'], {
+    ...data,
+    productId: removePrefix(pk, PRODUCT_PREFIX),
+    warehouseId: removePrefix(sk, WAREHOUSE_PREFIX)
+  }) as StockInventory
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -67,9 +78,30 @@ export const warehouseRepositoryFactory = (client: DynamoClient) => {
     await client.putItem(record, DDB_TABLE)
   }
 
+  const getStockInventoryByProductId = async (productId: string) =>
+    client
+      .query({
+        TableName: DDB_TABLE,
+        KeyConditionExpression: '#pk = :pk and begins_with (#sk, :sk)',
+        ExpressionAttributeNames: {
+          '#pk': 'pk',
+          '#sk': 'sk'
+        },
+        ExpressionAttributeValues: {
+          ':pk': addPrefix(productId, PRODUCT_PREFIX),
+          ':sk': WAREHOUSE_PREFIX
+        }
+      } as QueryInput)
+      .then(res =>
+        pathOr<StockInventory[]>([], ['Items'], res).map(
+          dynamoRecordToStockInventoryRecord
+        )
+      )
+
   return {
     getWarehouseById,
     saveWarehouse,
-    saveWarehouseStock
+    saveWarehouseStock,
+    getStockInventoryByProductId
   }
 }
