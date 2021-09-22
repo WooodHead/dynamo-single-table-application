@@ -45,6 +45,7 @@ declare type Payment = {
 declare type Invoice = {
   id?: string
   orderId: string
+  customerId: string
   payments: Payment[]
   amount: number
   date?: string

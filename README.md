@@ -9,6 +9,7 @@ An eCommerce application using a single [DynamoDb](https://aws.amazon.com/dynamo
 - [Testing](#testing)
 - [AWS commands](#aws-commands)
 - [Table design](#table-design)
+  - [ERD](#erd)
   - [Access patterns](#access-patterns)
   - [Key prefixes](#key-prefixes)
   - [Customers](#customers)
@@ -74,9 +75,9 @@ awslocal dynamodb scan --table-name table --index-name gsi2
 11. get shipment by shipment id (GSI1)
 12. get shipments by warehouse id (GSI2)
 13. get product inventory by warehouse id (GSI1)
-    --- todo ---
 14. get invoices by customer id within a date range (GSI2)
-15. get products by customer id within a date range (GSI2)
+    --- todo ---
+15. get product orders by customer id within a date range (GSI2)
 
 ### Key prefixes
 
@@ -221,25 +222,28 @@ sample order invoice record
 ```
 {
     "pk": {
-        "S": "o#c660de9e-78db-49e8-bc48-da2f5672077c"
+        "S": "o#16f79ac3-9046-4e53-8f42-a856a263c099"
     },
     "sk": {
-        "S": "i#6fb083f1-0468-482a-9cdb-ea101b9e49a0"
+        "S": "i#b3fba4a7-eb94-4195-b432-9010c7bc06e0"
     },
     "gsi1_pk": {
-        "S": "i#6fb083f1-0468-482a-9cdb-ea101b9e49a0"
+        "S": "i#b3fba4a7-eb94-4195-b432-9010c7bc06e0"
     },
     "gsi1_sk": {
-        "S": "i#6fb083f1-0468-482a-9cdb-ea101b9e49a0"
+        "S": "i#b3fba4a7-eb94-4195-b432-9010c7bc06e0"
+    },
+    "gsi2_pk": {
+        "S": "c#35c4947c-ed50-4943-ba85-321526f919ca"
+    },
+    "gsi2_sk": {
+        "S": "2021-09-22T17:03:48.842Z"
     },
     "date": {
-        "S": "2021-09-21T23:27:09.104Z"
+        "S": "2021-09-22T17:03:48.842Z"
     },
     "amount": {
-        "N": "313.06"
-    },
-    "entityType": {
-        "S": "invoice"
+        "N": "8679"
     },
     "payments": {
         "L": [
@@ -249,11 +253,14 @@ sample order invoice record
                         "S": "amex"
                     },
                     "amount": {
-                        "N": "313.06"
+                        "N": "80459"
                     }
                 }
             }
         ]
+    },
+    "entityType": {
+        "S": "invoice"
     }
 },
 ```

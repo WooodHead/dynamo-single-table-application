@@ -59,6 +59,7 @@ export const testPayment = (overrides: Partial<Payment> = {}): Payment => ({
 export const testInvoice = (overrides: Partial<Invoice> = {}): Invoice => ({
   id: datatype.uuid(),
   orderId: datatype.uuid(),
+  customerId: datatype.uuid(),
   payments: [testPayment()],
   amount: datatype.number(),
   date: new Date().toISOString(),
