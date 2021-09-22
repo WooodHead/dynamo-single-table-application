@@ -49,10 +49,6 @@ describe('warehouses', () => {
     expect(result).toEqual(updated)
   })
 
-  it('saves stock items', async () => {
-    await repository.saveWarehouseStock(testStockInventory())
-  })
-
   it('gets stock inventory by product id', async () => {
     const warehouses = await createWarehouses(4)
     const products = await createProducts(10)
@@ -93,6 +89,8 @@ describe('warehouses', () => {
     const inventoryCheckProduct0 =
       await repository.getStockInventoryByProductId(products[0].id!)
 
-    expect(inventoryCheckProduct0).toMatchObject([stockRecord1, stockRecord3])
+    expect(inventoryCheckProduct0).toEqual(
+      expect.arrayContaining([stockRecord1, stockRecord3])
+    )
   })
 })

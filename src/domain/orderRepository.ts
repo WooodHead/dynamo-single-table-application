@@ -7,11 +7,9 @@ import { CUSTOMER_PREFIX } from './customerRepository'
 import { PRODUCT_PREFIX } from './productRepository'
 
 export const ORDER_PREFIX = 'o#'
-const SHIPMENT_PREFIX = 's#'
 const SHIPMENT_ITEM_PREFIX = 'd#'
 const entityType = 'order'
 const orderItemEntityType = 'orderItem'
-const shipmentEntityType = 'shipment'
 const shipmentItemEntityType = 'shipmentItem'
 
 const dynamoRecordToRecord = (record: any): Order => {
@@ -81,27 +79,6 @@ export const orderRepositoryFactory = (client: DynamoClient) => {
     await client.putItem(record, DDB_TABLE)
   }
 
-  const saveOrderShipment = async ({
-    id,
-    orderId,
-    address,
-    type,
-    date = new Date().toISOString()
-  }: Shipment) => {
-    const _id = id ? id : uuidv4()
-
-    const record = {
-      pk: addPrefix(orderId, ORDER_PREFIX),
-      sk: addPrefix(_id, SHIPMENT_PREFIX),
-      address,
-      type,
-      date,
-      entityType: shipmentEntityType
-    }
-
-    await client.putItem(record, DDB_TABLE)
-  }
-
   const saveOrderShipmentItem = async ({
     id,
     orderId,
@@ -127,7 +104,6 @@ export const orderRepositoryFactory = (client: DynamoClient) => {
     getCustomerOrderById,
     saveCustomerOrder,
     saveOrderItem,
-    saveOrderShipment,
     saveOrderShipmentItem
   }
 }

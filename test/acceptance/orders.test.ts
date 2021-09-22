@@ -1,11 +1,6 @@
 import { orderRepositoryFactory } from '../../src/domain/orderRepository'
 import { testDynamoClient } from '../awsTestClients'
-import {
-  testOrder,
-  testOrderItem,
-  testShipment,
-  testShipmentItem
-} from '../testFactories'
+import { testOrder, testOrderItem, testShipmentItem } from '../testFactories'
 
 const repository = orderRepositoryFactory(testDynamoClient)
 
@@ -58,10 +53,6 @@ describe('orders', () => {
 
   it('saves an order item', async () => {
     await repository.saveOrderItem(testOrderItem())
-  })
-
-  it('saves a shipment', async () => {
-    await repository.saveOrderShipment(testShipment())
   })
 
   it('saves a shipment item', async () => {
