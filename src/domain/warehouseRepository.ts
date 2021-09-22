@@ -6,7 +6,7 @@ import { addPrefix, removePrefix } from '../utils'
 import { PRODUCT_PREFIX } from './productRepository'
 import { QueryInput } from 'aws-sdk/clients/dynamodb'
 
-const WAREHOUSE_PREFIX = 'w#'
+export const WAREHOUSE_PREFIX = 'w#'
 const entityType = 'warehouse'
 const stockEntityType = 'warehouseStock'
 

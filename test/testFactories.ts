@@ -80,6 +80,7 @@ export const testShipmentType = (): ShipmentType =>
 
 export const testShipment = (overrides: Partial<Shipment> = {}): Shipment => ({
   id: datatype.uuid(),
+  warehouseId: datatype.uuid(),
   orderId: datatype.uuid(),
   type: testShipmentType(),
   address: testAddress(),

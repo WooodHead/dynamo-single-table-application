@@ -1,7 +1,7 @@
 import { shipmentRepositoryFactory } from '../../src/domain/shipmentRepository'
 import { testDynamoClient } from '../awsTestClients'
 import { testShipment } from '../testFactories'
-import { createOrders, promiseTimeout } from '../testUtils'
+import { createOrders, createWarehouses, promiseTimeout } from '../testUtils'
 
 const repository = shipmentRepositoryFactory(testDynamoClient)
 
@@ -52,6 +52,19 @@ describe('shipments', () => {
     )
 
     const shipment = await repository.getShipmentByShipmentId(expected.id!)
+
+    expect(shipment).toEqual(expected)
+  })
+
+  it('gets an shipment by warehouse id', async () => {
+    const [warehouse] = await createWarehouses(1)
+    const expected = await repository.saveOrderShipment(
+      testShipment({ id: undefined, warehouseId: warehouse.id })
+    )
+
+    const shipment = await repository.getShipmentByWarehouseId(
+      expected.warehouseId
+    )
 
     expect(shipment).toEqual(expected)
   })

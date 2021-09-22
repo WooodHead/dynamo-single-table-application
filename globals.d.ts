@@ -61,6 +61,7 @@ declare type ShipmentType = 'express' | 'normal'
 
 declare type Shipment = {
   id?: string
+  warehouseId: string
   orderId: string
   type: ShipmentType
   address: Address
