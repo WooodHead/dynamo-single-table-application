@@ -13,49 +13,22 @@ Resources:
           AttributeType: S
         - AttributeName: sk
           AttributeType: S
-        # - AttributeName: lsi1
-        #   AttributeType: S
-        # - AttributeName: gsi2
-        #   AttributeType: S
-        # - AttributeName: gsi3
-        #   AttributeType: S
-        # - AttributeName: ttl
-        #   AttributeType: S
+        - AttributeName: gsi1-pk
+          AttributeType: S
+        - AttributeName: gsi1-sk
+          AttributeType: S
       KeySchema:
         - AttributeName: pk
           KeyType: HASH
         - AttributeName: sk
           KeyType: RANGE
       BillingMode: PAY_PER_REQUEST
-      # LocalSecondaryIndexes:
-      #   - IndexName: lsi1
-      #     Projection:
-      #       ProjectionType: ALL
-      #     KeySchema:
-      #       - AttributeName: pk
-      #         KeyType: HASH
-      #       - AttributeName: lsi1
-      #         KeyType: RANGE
-      # GlobalSecondaryIndexes:
-      #   - IndexName: gsi1
-      #     Projection:
-      #       ProjectionType: ALL
-      #     KeySchema:
-      #       - AttributeName: sk
-      #         KeyType: HASH
-      #       - AttributeName: pk
-      #         KeyType: RANGE
-      #   - IndexName: gsi2
-      #     Projection:
-      #       ProjectionType: ALL
-      #     KeySchema:
-      #       - AttributeName: gsi2
-      #         KeyType: HASH
-      #   - IndexName: gsi3
-      #     Projection:
-      #       ProjectionType: ALL
-      #     KeySchema:
-      #       - AttributeName: sk
-      #         KeyType: HASH
-      #       - AttributeName: gsi3
-      #         KeyType: RANGE
+      GlobalSecondaryIndexes:
+        - IndexName: gsi1
+          Projection:
+            ProjectionType: ALL
+          KeySchema:
+            - AttributeName: gsi1-pk
+              KeyType: HASH
+            - AttributeName: gsi1-sk
+              KeyType: RANGE

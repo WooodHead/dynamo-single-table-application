@@ -31,6 +31,7 @@ yarn purge
 2. get product by product id
 3. get warehouse by warehouse id
 4. get order by order id
+5. get invoice by invoice id (GSI1)
 
 ### Key prefixes
 
