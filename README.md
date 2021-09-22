@@ -5,6 +5,7 @@ An eCommerce application using a single [DynamoDb](https://aws.amazon.com/dynamo
 ![DynamoDb](./design/DynamoDB.png)
 
 - [References](#references)
+- [Requirements](#requirements)
 - [Environment setup](#environment-setup)
 - [Testing](#testing)
 - [AWS commands](#aws-commands)
