@@ -56,3 +56,13 @@ declare type OrderItem = {
   price: number
   quantity: number
 }
+
+declare type ShipmentType = 'express' | 'normal'
+
+declare type Shipment = {
+  id?: string
+  orderId: string
+  type: ShipmentType
+  address: Address
+  date: string
+}

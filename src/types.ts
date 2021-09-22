@@ -5,3 +5,5 @@ export const paymentTypes: PaymentType[] = [
   'visa',
   'amex'
 ]
+
+export const shipmentTypes: ShipmentType[] = ['express', 'normal']

@@ -1,6 +1,11 @@
 import { orderServiceFactory } from '../../src/domain/orderService'
 import { testDynamoClient } from '../awsTestClients'
-import { testInvoice, testOrder, testOrderItem } from '../testFactories'
+import {
+  testInvoice,
+  testOrder,
+  testOrderItem,
+  testShipment
+} from '../testFactories'
 
 const service = orderServiceFactory(testDynamoClient)
 
@@ -61,5 +66,9 @@ describe('orders', () => {
 
   it('saves an order item', async () => {
     await service.saveOrderItem(testOrderItem())
+  })
+
+  it('saves a shipment', async () => {
+    await service.saveOrderShipment(testShipment())
   })
 })

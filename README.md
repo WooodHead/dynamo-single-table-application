@@ -219,6 +219,44 @@ order item sample record
 }
 ```
 
+order shipment sample record
+
+```
+{
+    "pk": {
+        "S": "o#26c013ed-d9fd-4e1d-b83f-ac6894e7abaa"
+    },
+    "sk": {
+        "S": "s#a13ad3f1-fef6-4175-b427-0b93bb9deaad"
+    },
+    "date": {
+        "S": "2021-09-22T06:57:20.497Z"
+    },
+    "address": {
+        "M": {
+            "line1": {
+                "S": "79477 Runte Ports"
+            },
+            "town": {
+                "S": "Avon"
+            },
+            "city": {
+                "S": "Romagueraview"
+            },
+            "postcode": {
+                "S": "52996-8189"
+            }
+        }
+    },
+    "type": {
+        "S": "express"
+    },
+    "entityType": {
+        "S": "shipment"
+    }
+},
+```
+
 ## References
 
 This work is largely taken from and inspired by the following sources:
