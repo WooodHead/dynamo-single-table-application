@@ -285,35 +285,47 @@ order shipment sample record
 ```
 {
     "pk": {
-        "S": "o#26c013ed-d9fd-4e1d-b83f-ac6894e7abaa"
+        "S": "o#68e522e8-48b6-4a0c-9eb6-d3d92352cbf9"
     },
     "sk": {
-        "S": "s#a13ad3f1-fef6-4175-b427-0b93bb9deaad"
+        "S": "s#162f3190-e302-4ad7-99a4-0f45fc34218c"
     },
+    "gsi1_pk": {
+        "S": "s#162f3190-e302-4ad7-99a4-0f45fc34218c"
+    },
+    "gsi2_pk": {
+        "S": "w#75678b9a-626a-462a-9c32-0e7ecb990926"
+    },
+    "gsi2_sk": {
+        "S": "s#162f3190-e302-4ad7-99a4-0f45fc34218c"
+    },
+     "gsi1_sk": {
+        "S": "s#162f3190-e302-4ad7-99a4-0f45fc34218c"
+    }
     "date": {
-        "S": "2021-09-22T06:57:20.497Z"
+        "S": "2021-09-22T16:24:31.074Z"
     },
     "address": {
         "M": {
             "line1": {
-                "S": "79477 Runte Ports"
+                "S": "208 Ritchie Islands"
             },
             "town": {
-                "S": "Avon"
+                "S": "Bedfordshire"
             },
             "city": {
-                "S": "Romagueraview"
+                "S": "Aliso Viejo"
             },
             "postcode": {
-                "S": "52996-8189"
+                "S": "46022"
             }
         }
     },
-    "type": {
-        "S": "express"
-    },
     "entityType": {
         "S": "shipment"
+    },
+    "type": {
+        "S": "normal"
     }
 },
 ```
